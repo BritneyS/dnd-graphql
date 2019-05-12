@@ -11,14 +11,14 @@ const classesEndpoint = 'http://dnd5eapi.co/api/classes/';
 app.use(cors());
 const schema = gql`
     type Query {
-        result: Result
+        classResult: ClassResult
         class: Class
-        results: [Class]
+        allClasses: [Class]
     }
 
-    type Result {
+    type ClassResult {
         count: Int
-        results: [Class]
+        allClasses: [Class]
     }
 
     type Class {
@@ -27,16 +27,16 @@ const schema = gql`
 `;
 const resolvers = {
     Query: {
-        result: () => {
+        classResult: () => {
             return fetch(classesEndpoint)
             .then(res => res.json());
         },
     },
-    Result: {
+    ClassResult: {
         count: (result) => {
             return result.count;
         },
-        results: (result) => {
+        allClasses: (result) => {
             return Object.values(result.results);
         },
     },
