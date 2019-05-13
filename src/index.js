@@ -7,13 +7,13 @@ import fetch from 'node-fetch';
 const app = express();
 const ENV_PORT = process.env.ENV_PORT;
 const classesEndpoint = 'http://dnd5eapi.co/api/classes/';
+const racesEndpoint = 'http://dnd5eapi.co/api/races/';
 
 app.use(cors());
 const schema = gql`
     type Query {
         classResult: ClassResult
-        class: Class
-        allClasses: [Class]
+        raceResult: RaceResult
     }
 
     type ClassResult {
@@ -21,16 +21,29 @@ const schema = gql`
         allClasses: [Class]
     }
 
+    type RaceResult {
+        count: Int
+        allRaces: [Race]
+    }
+
     type Class {
+        name: String
+    }
+
+    type Race {
         name: String
     }
 `;
 const resolvers = {
     Query: {
-        classResult: () => {
+        classResult: async () => {
             return fetch(classesEndpoint)
             .then(res => res.json());
         },
+        raceResult: async () => {
+            return fetch(racesEndpoint)
+            .then(res => res.json());
+        }
     },
     ClassResult: {
         count: (result) => {
@@ -39,6 +52,14 @@ const resolvers = {
         allClasses: (result) => {
             return Object.values(result.results);
         },
+    },
+    RaceResult: {
+        count: (result) => {
+            return result.count;
+        },
+        allRaces: (result) => {
+            return Object.values(result.results)
+        }
     },
 };
 
