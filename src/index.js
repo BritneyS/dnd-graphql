@@ -14,8 +14,6 @@ const schema = gql`
     type Query {
         classResult: ClassResult
         raceResult: RaceResult
-        class: Class
-        allClasses: [Class]
     }
 
     type ClassResult {
