@@ -36,11 +36,11 @@ const schema = gql`
 `;
 const resolvers = {
     Query: {
-        classResult: () => {
+        classResult: async () => {
             return fetch(classesEndpoint)
             .then(res => res.json());
         },
-        raceResult: () => {
+        raceResult: async () => {
             return fetch(racesEndpoint)
             .then(res => res.json());
         }
